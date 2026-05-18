@@ -2,7 +2,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from datetime import datetime, timedelta
 from aiogram import Bot
 from config import settings
-from memory.redis_client import get_draft
+from memory.storage import get_draft
 from tools.validator import validate_post
 from utils.logger import logger
 

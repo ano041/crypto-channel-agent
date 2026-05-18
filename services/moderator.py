@@ -3,7 +3,7 @@ from aiogram import Bot
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from prompts.schemas import CryptoPostSchema
 from utils.formatting import safe_md2
-from memory.redis_client import save_draft
+from memory.storage import save_draft
 
 
 async def send_for_approval(bot: Bot, post: CryptoPostSchema, chat_id: int) -> str:

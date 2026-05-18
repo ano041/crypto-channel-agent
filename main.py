@@ -4,7 +4,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from config import settings
-from memory.redis_client import init_redis
+from memory.storage import init_redis
 from handlers.commands import router as commands_router
 from handlers.callbacks import router as callbacks_router
 from handlers.errors import router as errors_router
