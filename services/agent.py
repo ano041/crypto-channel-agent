@@ -4,8 +4,8 @@ from config import settings
 from prompts.system import CRYPTO_AGENT_PROMPT
 from prompts.schemas import CryptoPostSchema
 from tools.search import tavily_search
-from tools.validator import crypto_validate
-from memory.redis_client import save_draft
+from tools.validator import validate_post
+from memory.storage import save_draft
 from utils.logger import logger
 
 client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
@@ -31,8 +31,11 @@ async def generate_crypto_post(query: str) -> CryptoPostSchema:
 
     post: CryptoPostSchema = response.choices[0].message.parsed
 
-    if not await crypto_validate(post):
+    # Валидация поста
+    is_valid, error_msg = validate_post(post.model_dump())
+    if not is_valid:
         post.approval_status = "needs_edit"
+        logger.warning("Post validation failed", error=error_msg)
 
     draft_key = post.content.headline[:60].replace(" ", "_")
     await save_draft(draft_key, post.model_dump())
